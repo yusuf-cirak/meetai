@@ -5,7 +5,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
+import { FaGoogle, FaGithub } from "react-icons/fa";
 import { Card, CardContent } from "@/components/ui/card";
 import {
 	Form,
@@ -43,7 +43,7 @@ export const SignInView = () => {
 		},
 	});
 
-	const onSubmit = async (data: z.infer<typeof formSchema>) => {
+	const onSubmit = (data: z.infer<typeof formSchema>) => {
 		setError(null);
 		setIsPending(true);
 
@@ -55,6 +55,27 @@ export const SignInView = () => {
 			{
 				onSuccess: () => {
 					router.push("/");
+					setIsPending(false);
+				},
+				onError: ({ error }) => {
+					setError(error.message);
+					setIsPending(false);
+				},
+			},
+		);
+	};
+
+	const onSocial = (provider: "google" | "github") => {
+		setError(null);
+		setIsPending(true);
+
+		authClient.signIn.social(
+			{
+				provider,
+				callbackURL: "/",
+			},
+			{
+				onSuccess: () => {
 					setIsPending(false);
 				},
 				onError: ({ error }) => {
@@ -138,15 +159,17 @@ export const SignInView = () => {
 										disabled={isPending}
 										variant="outline"
 										type="button"
+										onClick={() => onSocial("google")}
 										className="w-full">
-										Google
+										<FaGoogle />
 									</Button>
 									<Button
 										disabled={isPending}
 										variant="outline"
 										type="button"
+										onClick={() => onSocial("github")}
 										className="w-full">
-										Facebook
+										<FaGithub />
 									</Button>
 								</div>
 								<div className="text-center text-sm">
