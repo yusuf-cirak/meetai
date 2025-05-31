@@ -59,7 +59,7 @@ export const DashboardSidebar = () => {
 				</Link>
 			</SidebarHeader>
 			<div className="px-4 py-2">
-				<Separator className="opacity-100 text-[#5D6B68]"></Separator>
+				<Separator className="opacity-10 text-[#5D6B68]"></Separator>
 			</div>
 			<SidebarContent>
 				<SidebarGroup>
@@ -88,7 +88,7 @@ export const DashboardSidebar = () => {
 					</SidebarGroupContent>
 				</SidebarGroup>
 				<div className="px-4 py-2">
-					<Separator className="opacity-100 text-[#5D6B68]"></Separator>
+					<Separator className="opacity-10 text-[#5D6B68]"></Separator>
 				</div>
 				<SidebarGroup>
 					<SidebarGroupContent>
