@@ -14,7 +14,12 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronRightIcon, MoreVerticalIcon, TrashIcon } from "lucide-react";
+import {
+	ChevronRightIcon,
+	EditIcon,
+	MoreVerticalIcon,
+	TrashIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 interface Props {
@@ -62,10 +67,12 @@ export const AgentIdViewHeader = ({
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
 					<DropdownMenuItem onClick={onEdit}>
-						<TrashIcon className="size-4 text-black">Edit</TrashIcon>
+						<EditIcon className="size-4 text-black"></EditIcon>
+						Edit
 					</DropdownMenuItem>
 					<DropdownMenuItem onClick={onRemove}>
-						<TrashIcon className="size-4 text-black">Delete</TrashIcon>
+						<TrashIcon className="size-4 text-black"></TrashIcon>
+						Delete
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
