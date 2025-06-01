@@ -1,5 +1,5 @@
 /** @format */
-
+import { nanoid } from "nanoid";
 import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
 // basic auth schema copied from drizzle-orm docs
@@ -62,3 +62,15 @@ export const verification = pgTable("verification", {
 		() => /* @__PURE__ */ new Date(),
 	),
 });
+
+
+export const agents = pgTable("agents",{
+	id: text("id").primaryKey().$defaultFn(() => nanoid()),
+		userId: text("user_id")
+		.notNull()
+		.references(() => user.id, { onDelete: "cascade" }),
+	name: text("name").notNull(),
+	instructions: text("instructions").notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+})
