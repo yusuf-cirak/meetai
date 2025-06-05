@@ -12,6 +12,7 @@ import {
 } from "@/constants";
 import { TRPCError } from "@trpc/server";
 import { meetings } from "@/db/schema";
+import { meetingsInsertSchema, meetingsUpdateSchema } from "../schemas";
 
 export const meetingsRouter = createTRPCRouter({
 	getOne: protectedProcedure
@@ -86,7 +87,7 @@ export const meetingsRouter = createTRPCRouter({
 		.mutation(async ({ input, ctx }) => {
 			const { auth } = ctx;
 
-			const [createdAgent] = await db
+			const [createdMeeting] = await db
 				.insert(meetings)
 				.values({
 					...input,
@@ -94,7 +95,9 @@ export const meetingsRouter = createTRPCRouter({
 				})
 				.returning();
 
-			return createdAgent;
+			// todo: create stream call, upsert stream users
+
+			return createdMeeting;
 		}),
 
 	update: protectedProcedure
