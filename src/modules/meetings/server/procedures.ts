@@ -11,7 +11,7 @@ import {
 	MIN_PAGE_SIZE,
 } from "@/constants";
 import { TRPCError } from "@trpc/server";
-import { meetings } from "@/db/schema";
+import { agents, meetings } from "@/db/schema";
 import { meetingsInsertSchema, meetingsUpdateSchema } from "../schemas";
 
 export const meetingsRouter = createTRPCRouter({
@@ -22,8 +22,13 @@ export const meetingsRouter = createTRPCRouter({
 				.select({
 					...getTableColumns(meetings),
 					meetingCount: sql<number>`5`,
+					agent: agents,
+					duration: sql<number>`EXTRACT(EPOCH FROM (ended_at - started_at))`.as(
+						"duration",
+					),
 				})
 				.from(meetings)
+				.innerJoin(agents, eq(meetings.agentId, agents.id))
 				.where(
 					and(eq(meetings.id, input.id), eq(meetings.userId, ctx.auth.user.id)),
 				);
@@ -51,9 +56,13 @@ export const meetingsRouter = createTRPCRouter({
 			const data = await db
 				.select({
 					...getTableColumns(meetings),
-					meetingCount: sql<number>`5`,
+					agent: agents,
+					duration: sql<number>`EXTRACT(EPOCH FROM (ended_at - started_at))`.as(
+						"duration",
+					),
 				})
 				.from(meetings)
+				.innerJoin(agents, eq(meetings.agentId, agents.id))
 				.where(
 					and(
 						eq(meetings.userId, ctx.auth.user.id),
