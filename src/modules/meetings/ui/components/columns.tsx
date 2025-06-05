@@ -5,7 +5,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { GeneratedAvatar } from "@/components/generated-avatar";
 import { Badge } from "@/components/ui/badge";
-import { MeetingGetMany } from "../../types";
+import { MeetingGetMany, MeetingStatus } from "../../types";
 import { format } from "date-fns";
 import { meetingStatusValues } from "@/db/schema";
 import humanizeDuration from "humanize-duration";
@@ -21,8 +21,6 @@ import { cn } from "@/lib/utils";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 type Meeting = MeetingGetMany[number];
-
-export type MeetingStatus = (typeof meetingStatusValues)[number];
 
 const meetingStatusIconMap: Record<MeetingStatus, React.ElementType> = {
 	upcoming: ClockArrowUpIcon,
