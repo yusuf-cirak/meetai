@@ -13,9 +13,13 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { toast } from "sonner";
-
+import { MeetingStatus } from "@/db/schema";
+import { UpcomingState } from "@/modules/meetings/ui/components/upcoming-state";
+import { ActiveState } from "@/modules/meetings/ui/components/active-state";
+import { CancelledState } from "@/modules/meetings/ui/components/cancelled-state";
+import { ProcessingState } from "@/modules/meetings/ui/components/processing-state";
 interface Props {
 	meetingId: string;
 }
@@ -58,6 +62,36 @@ export const MeetingIdView = ({ meetingId }: Props) => {
 
 	const [updateMeetingDialogOpen, setUpdateMeetingDialogOpen] = useState(false);
 
+	const meetingStateComponents: Record<
+		(typeof MeetingStatus)[keyof typeof MeetingStatus],
+		JSX.Element
+	> = {
+		[MeetingStatus.Active]: (
+			<div>
+				<ActiveState meetingId={meetingId}></ActiveState>
+			</div>
+		),
+		[MeetingStatus.Completed]: <div>Completed Meeting State</div>,
+		[MeetingStatus.Cancelled]: (
+			<div>
+				<CancelledState></CancelledState>
+			</div>
+		),
+		[MeetingStatus.Upcoming]: (
+			<div>
+				<UpcomingState
+					meetingId={meetingId}
+					onCancelMeeting={() => {}}
+					isCanceling={false}></UpcomingState>
+			</div>
+		),
+		[MeetingStatus.Processing]: (
+			<div>
+				<ProcessingState></ProcessingState>
+			</div>
+		),
+	};
+
 	return (
 		<>
 			<RemoveConfirmation />
@@ -73,7 +107,8 @@ export const MeetingIdView = ({ meetingId }: Props) => {
 					onEdit={() => setUpdateMeetingDialogOpen(true)}
 					onRemove={handleRemoveMeeting}
 				/>
-				<div>{JSON.stringify(data, null, 2)}</div>
+				{data.status in meetingStateComponents &&
+					meetingStateComponents[data.status]}
 			</div>
 		</>
 	);
