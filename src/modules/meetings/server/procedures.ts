@@ -114,8 +114,6 @@ export const meetingsRouter = createTRPCRouter({
 				})
 				.returning();
 
-			// todo: create stream call, upsert stream users
-
 			const [existingAgent] = await db
 				.select()
 				.from(agents)
