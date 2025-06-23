@@ -25,7 +25,7 @@ const Page = async ({ searchParams }: Props) => {
 		headers: await headers(),
 	});
 
-	if (!session) {
+	if (!session?.user) {
 		redirect("/");
 	}
 
